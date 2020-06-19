@@ -112,8 +112,8 @@ prompt> iadmin atg rodsadmin demo-admin
 
 ### Generating the Docker Source Files
 
-Use the `prep-docker` program to create `Dockerfile` and `docker-compose.yml` files that can be
-used to build and run a container hosting an iRODS resource server in CyVerse Data Store.
+Use the `prep-docker` program to create `Dockerfile` and `docker-compose.yml` files for building
+and running a container hosting an iRODS resource server in CyVerse's Data Store.
 
 As its first command line argument, `prep-docker` expects the name of a file defining a set of
 expected environment variables. It accepts an optional second argument specifying the directory to
@@ -126,7 +126,7 @@ file.
 Environment Variable        | Required | Default       | Description
 --------------------------- | -------- | ------------- | -----------
 `IRODS_CLERVER_USER`        | no       | ipc_admin     | the name of the rodsadmin user representing the resource server within the zone
-`IRODS_HOST_UID`            | no       |               | the UID of the hosting server to run iRODS as instead of the default user defined in the container
+`IRODS_HOST_UID`            | yes      |               | the UID of the hosting server to run iRODS
 `IRODS_LOG_DIR`             | no       | `$HOME`/log   | the host directory where the container will mount the iRODS log directory (`/var/lib/irods/iRODS/server/log`), `$HOME` is evaluated at container start time
 `IRODS_RES_SERVER`          | yes      |               | the FQDN or address used by the rest of the grid to communicate with this server
 `IRODS_RES_VAULT`           | no       | `$HOME`/vault | the host directory where the container will mount the vault, for the default, `$HOME` is evaluated at container start time

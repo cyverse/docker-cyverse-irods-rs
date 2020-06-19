@@ -1,6 +1,5 @@
 #! /bin/bash
 
-
 show_help()
 {
   cat <<'EOF'
@@ -26,9 +25,7 @@ Environment Variables:
  IRODS_CLERVER_USER         (optional) the name of the rodsadmin user
                             representing the resource server within the zone:
                             default 'ipc_admin'
- IRODS_HOST_UID             (optional) the UID of the hosting server to run
-                            iRODS as instead of the default user defined in the
-                            container
+ IRODS_HOST_UID             the UID of the hosting server to run iRODS
  IRODS_LOG_DIR              (optional) the absolute path on the server hosting
                             the container where iRODS will write its logs:
                             default '<home>/log' where <home> is the home
@@ -46,7 +43,7 @@ EOF
 }
 
 
-set -e
+set -o errexit -o nounset -o pipefail
 
 
 main()
@@ -110,6 +107,7 @@ build()
 
   # shellcheck disable=SC1090
   . "$envFile"
+  check_env IRODS_HOST_UID
   check_env IRODS_RES_SERVER
   check_env IRODS_STORAGE_RES
   check_env IRODS_TLS_CERT_CHAIN_FILE
@@ -185,7 +183,7 @@ services:
       - "20000-20009:20000-20009/tcp"
       - "20000-20009:20000-20009/udp"
     restart: on-failure
-    tmpfs: /var/lib/irods/iRODS/server/log/proc
+    tmpfs: /var/lib/irods/iRODS/server/log/proc:uid=$IRODS_HOST_UID
     tty: true
     volumes:
       - $hostVault:/irods_vault/$IRODS_STORAGE_RES
